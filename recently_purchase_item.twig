@@ -8,6 +8,7 @@
  file that was distributed with this source code.
 #}
 
+{% if OrderList %}
 <div class="item_gallery">
     <h4>最近購入された商品</h4>
     <ul class="row">
@@ -34,3 +35,4 @@
       {% endfor %}
     </ul>
 </div>
+{% endif %}
