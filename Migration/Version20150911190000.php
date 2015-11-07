@@ -23,25 +23,31 @@ class Version20150911190000 extends AbstractMigration
 
     public function down(Schema $schema)
     {
-      $this->addSql('DELETE FROM dtb_block WHERE file_name = "recently_purchase_item" ');
+      $this->connection->delete('dtb_block', array('file_name' => 'recently_purchase_item'));
     }
 
     public function postUp(Schema $schema)
     {
 
-    $app = new \Eccube\Application();
-    $app->boot();
-    $deviceTypeId = '10';
-    $blockName = '最近購入された商品';
-    $fileName = 'recently_purchase_item';
-    $datetime = date('Y-m-d H:i:s');
-    $logicFlg = '1';
-    $deletableFlg = '1';
-    $insert = "INSERT INTO dtb_block(
-                        device_type_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg)
-                VALUES ('$deviceTypeId', '$blockName', '$fileName', '$datetime', '$datetime', '$logicFlg', '$deletableFlg'
-                        );";
-    $this->connection->executeUpdate($insert);
+      $app = new \Eccube\Application();
+      $app->boot();
+
+      $statement = $this->connection->prepare('SELECT block_id FROM dtb_block');
+      $statement->execute();
+      $blockId = $statement->fetchAll();
+
+      $blockIdNumber = count($blockId) + 1;
+      $deviceTypeId = '10';
+      $blockName = '最近購入された商品';
+      $fileName = 'recently_purchase_item';
+      $datetime = date('Y-m-d H:i:s');
+      $logicFlg = '1';
+      $deletableFlg = '1';
+      $insert = "INSERT INTO dtb_block(
+                          block_id, device_type_id, block_name, file_name, create_date, update_date, logic_flg, deletable_flg)
+                  VALUES ('$blockIdNumber', '$deviceTypeId', '$blockName', '$fileName', '$datetime', '$datetime', '$logicFlg', '$deletableFlg'
+                          );";
+      $this->connection->executeUpdate($insert);
 
   }
 }
