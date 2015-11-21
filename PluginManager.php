@@ -23,7 +23,7 @@ class PluginManager extends AbstractPluginManager
 
       $file = new Filesystem();
       try {
-          $file->copy($app['config']['root_dir']. '/app/Plugin/RecentlyPurchaseItem/recently_purchase_item.twig', $app['config']['root_dir']. '/app/template/default/Block/recently_purchase_item.twig', true);
+          $file->copy($app['config']['root_dir']. '/app/Plugin/RecentlyPurchaseItem/recently_purchase_item.twig', $app['config']['template_realdir']. '/Block/recently_purchase_item.twig', true);
           return true;
       } catch (\Exception $e) {
           return false;
@@ -32,7 +32,7 @@ class PluginManager extends AbstractPluginManager
 
     public function uninstall($config, $app)
     {
-      unlink($app['config']['root_dir']. '/app/template/default/Block/recently_purchase_item.twig');
+      unlink($app['config']['template_realdir']. '/Block/recently_purchase_item.twig');
 
       $this->migrationSchema($app, __DIR__ . '/Migration', $config['code'], 0);
     }
